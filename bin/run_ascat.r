@@ -1,14 +1,14 @@
 #!/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)<6){
-    stop("No input files supplied\n\nUsage:\nRscript run_ascat.r tumor_baf tumor_logr normal_baf normal_logr tumor_sample_name baseDir\n\n")
+    stop("No input files supplied\n\nUsage:\nRscript run_ascat.r tumor_baf tumor_logr normal_baf normal_logr tumor_sample_name gamma_value\n\n")
 } else{
     tumorbaf = args[1]
     tumorlogr = args[2]
     normalbaf = args[3]
     normallogr = args[4]
     tumorname = args[5]
-    baseDir = args[6]
+    gamma_value = args[6]
 
 }
 
@@ -34,7 +34,8 @@ ascat.bc <- ascat.aspcf(ascat.bc)
 ascat.plotSegmentedData(ascat.bc)
 
 #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
-ascat.output <- ascat.runAscat(ascat.bc)
+#Use the gamma value sent in by user
+ascat.output <- ascat.runAscat(ascat.bc, gamma=gamma_value)
 
 #Write out segmented regions (including regions with one copy of each allele)
 #write.table(ascat.output$segments, file=paste(tumorname, ".segments.txt", sep=""), sep="\t", quote=F, row.names=F)
