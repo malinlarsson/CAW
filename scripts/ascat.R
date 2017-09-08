@@ -635,13 +635,13 @@ ascat.runAscat = function(ASCATobj, gamma = 0.55, rho_manual = NA, psi_manual = 
     }
     if(is.na(rho_manual)) {
       res[[arraynr]] = runASCAT(lrr,baf,lrrsegm,bafsegm,ASCATobj$gender[arraynr],ASCATobj$SNPpos,ASCATobj$ch,ASCATobj$chrs,ASCATobj$sexchromosomes, failedqualitycheck,
-                                paste(ASCATobj$samples[arraynr],".sunrise.png",sep=""),paste(ASCATobj$samples[arraynr],".ASCATprofile.png",sep=""),
-                                paste(ASCATobj$samples[arraynr],".rawprofile.png",sep=""),paste(ASCATobj$samples[arraynr],".aberrationreliability.png",sep=""),
+                                paste(ASCATobj$samples[arraynr],".gamma",gamma,".sunrise.png",sep=""),paste(ASCATobj$samples[arraynr],".gamma",gamma,".ASCATprofile.png",sep=""),
+                                paste(ASCATobj$samples[arraynr],".gamma",gamma,".rawprofile.png",sep=""),paste(ASCATobj$samples[arraynr],".gamma",gamma,".aberrationreliability.png",sep=""),
                                 gamma)
     } else {
       res[[arraynr]] = runASCAT(lrr,baf,lrrsegm,bafsegm,ASCATobj$gender[arraynr],ASCATobj$SNPpos,ASCATobj$ch,ASCATobj$chrs,ASCATobj$sexchromosomes, failedqualitycheck,
-                                paste(ASCATobj$samples[arraynr],".sunrise.png",sep=""),paste(ASCATobj$samples[arraynr],".ASCATprofile.png",sep=""),
-                                paste(ASCATobj$samples[arraynr],".rawprofile.png",sep=""),paste(ASCATobj$samples[arraynr],".aberrationreliability.png",sep=""),
+                                paste(ASCATobj$samples[arraynr],".gamma",gamma,".sunrise.png",sep=""),paste(ASCATobj$samples[arraynr],".gamma",gamma,".ASCATprofile.png",sep=""),
+                                paste(ASCATobj$samples[arraynr],".gamma",gamma,".rawprofile.png",sep=""),paste(ASCATobj$samples[arraynr],".gamma",gamma,".aberrationreliability.png",sep=""),
                                 gamma,rho_manual[arraynr],psi_manual[arraynr])
     }
     if(!is.na(res[[arraynr]]$rho)) {

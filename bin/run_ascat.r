@@ -37,10 +37,6 @@ ascat.plotSegmentedData(ascat.bc)
 
 #First use default gamma (0.55)
 ascat.output <- ascat.runAscat(ascat.bc)
-file.rename(paste(tumorname,"aberrationreliability.png",sep=""), paste(tumorname,".gamma0.55.aberrationreliability.png",sep=""))
-file.rename(paste(tumorname,"ASCATprofile.png",sep=""), paste(tumorname,".gamma0.55.ASCATprofile.png",sep=""))
-file.rename(paste(tumorname,"ASPCF.png",sep=""), paste(tumorname,".gamma0.55.ASPCF.png",sep=""))
-file.rename(paste(tumorname,"sunrise.png",sep=""), paste(tumorname,".gamma0.55.sunrise.png",sep=""))
 #Write out CNVs in bed format
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
 write.table(cnvs, file=paste(tumorname,".gamma0.55.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
@@ -52,10 +48,6 @@ write.table(summary, file=paste(tumorname,".gamma0.55.purityploidy.txt",sep=""),
 
 #Then use gamma optimised for NGS data (0.8)
 ascat.output <- ascat.runAscat(ascat.bc, gamma=0.8)
-file.rename(paste(tumorname,"aberrationreliability.png",sep=""), paste(tumorname,".gamma0.8.aberrationreliability.png",sep=""))
-file.rename(paste(tumorname,"ASCATprofile.png",sep=""), paste(tumorname,".gamma0.8.ASCATprofile.png",sep=""))
-file.rename(paste(tumorname,"ASPCF.png",sep=""), paste(tumorname,".gamma0.8.ASPCF.png",sep=""))
-file.rename(paste(tumorname,"sunrise.png",sep=""), paste(tumorname,".gamma0.8.sunrise.png",sep=""))
 #Write out CNVs in bed format
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
 write.table(cnvs, file=paste(tumorname,".gamma0.8.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
