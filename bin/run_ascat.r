@@ -1,7 +1,7 @@
 #!/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 if(length(args)<6){
-    stop("No input files supplied\n\nUsage:\nRscript run_ascat.r tumor_baf tumor_logr normal_baf normal_logr tumor_sample_name baseDir gamma_value\n\n")
+    stop("No input files supplied\n\nUsage:\nRscript run_ascat.r tumor_baf tumor_logr normal_baf normal_logr tumor_sample_name baseDir\n\n")
 } else{
     tumorbaf = args[1]
     tumorlogr = args[2]
@@ -9,7 +9,6 @@ if(length(args)<6){
     normallogr = args[4]
     tumorname = args[5]
     baseDir = args[6]
-    gamma_value = args[7]
 
 }
 
@@ -35,19 +34,32 @@ ascat.bc <- ascat.aspcf(ascat.bc)
 ascat.plotSegmentedData(ascat.bc)
 
 #Run ASCAT to fit every tumor to a model, inferring ploidy, normal cell contamination, and discrete copy numbers
-#Use the gamma value sent in by user
-ascat.output <- ascat.runAscat(ascat.bc, gamma=gamma_value)
 
-#Write out segmented regions (including regions with one copy of each allele)
-#write.table(ascat.output$segments, file=paste(tumorname, ".segments.txt", sep=""), sep="\t", quote=F, row.names=F)
-
+#First use default gamma (0.55)
+ascat.output <- ascat.runAscat(ascat.bc)
+file.rename(paste(tumorname,"aberrationreliability.png",sep=""), paste(tumorname,".gamma0.55.aberrationreliability.png",sep=""))
+file.rename(paste(tumorname,"ASCATprofile.png",sep=""), paste(tumorname,".gamma0.55.ASCATprofile.png",sep=""))
+file.rename(paste(tumorname,"ASPCF.png",sep=""), paste(tumorname,".gamma0.55.ASPCF.png",sep=""))
+file.rename(paste(tumorname,"sunrise.png",sep=""), paste(tumorname,".gamma0.55.sunrise.png",sep=""))
 #Write out CNVs in bed format
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
-write.table(cnvs, file=paste(tumorname,".cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
-
+write.table(cnvs, file=paste(tumorname,".gamma0.55.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
 #Write out purity and ploidy info
 summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
 colnames(summary) <- c("AberrantCellFraction","Ploidy")
-write.table(summary, file=paste(tumorname,".purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+write.table(summary, file=paste(tumorname,".gamma0.55.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
 
 
+#Then use gamma optimised for NGS data (0.8)
+ascat.output <- ascat.runAscat(ascat.bc, gamma=0.8)
+file.rename(paste(tumorname,"aberrationreliability.png",sep=""), paste(tumorname,".gamma0.8.aberrationreliability.png",sep=""))
+file.rename(paste(tumorname,"ASCATprofile.png",sep=""), paste(tumorname,".gamma0.8.ASCATprofile.png",sep=""))
+file.rename(paste(tumorname,"ASPCF.png",sep=""), paste(tumorname,".gamma0.8.ASPCF.png",sep=""))
+file.rename(paste(tumorname,"sunrise.png",sep=""), paste(tumorname,".gamma0.8.sunrise.png",sep=""))
+#Write out CNVs in bed format
+cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
+write.table(cnvs, file=paste(tumorname,".gamma0.8.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+#Write out purity and ploidy info
+summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
+colnames(summary) <- c("AberrantCellFraction","Ploidy")
+write.table(summary, file=paste(tumorname,".gamma0.8.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
