@@ -1060,10 +1060,10 @@ process RunAscat {
 
   script:
   """
-  idSampleTumor.g0.5=$idSampleTumor + ".g0.5."
-  idSampleTumor.g0.8=$idSampleTumor + ".g0.8."
-  run_ascat.r $bafTumor $logrTumor $bafNormal $logrNormal $idSampleTumor.g0.5 0.5
-  run_ascat.r $bafTumor $logrTumor $bafNormal $logrNormal $idSampleTumor.g0.8 0.8
+  idSampleTumor_g05='$idSampleTumor.g0.5'
+  idSampleTumor_g08='$idSampleTumor.g0.8'
+  run_ascat.r $bafTumor $logrTumor $bafNormal $logrNormal $idSampleTumor_g05 0.5
+  run_ascat.r $bafTumor $logrTumor $bafNormal $logrNormal $idSampleTumor_g08 0.8
   """
 }
 
