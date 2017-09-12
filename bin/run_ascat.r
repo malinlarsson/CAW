@@ -41,7 +41,7 @@ ascat.output <- ascat.runAscat(ascat.bc)
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
 write.table(cnvs, file=paste(tumorname,".gamma0.55.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
 #Write out purity and ploidy info
-if (exists(ascat.output$aberrantcellfraction) & exists(ascat.output$ploidy)) {
+if exists(ascat.output) {
     summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
     colnames(summary) <- c("AberrantCellFraction","Ploidy")
     write.table(summary, file=paste(tumorname,".gamma0.55.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
