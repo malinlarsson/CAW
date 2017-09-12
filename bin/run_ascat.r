@@ -41,10 +41,11 @@ ascat.output <- ascat.runAscat(ascat.bc)
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
 write.table(cnvs, file=paste(tumorname,".gamma0.55.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
 #Write out purity and ploidy info
-summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
-colnames(summary) <- c("AberrantCellFraction","Ploidy")
-write.table(summary, file=paste(tumorname,".gamma0.55.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
-
+if (exists(ascat.output$aberrantcellfraction) & exists(ascat.output$ploidy)) {
+    summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
+    colnames(summary) <- c("AberrantCellFraction","Ploidy")
+    write.table(summary, file=paste(tumorname,".gamma0.55.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+}
 
 #Then use gamma optimised for NGS data (0.8)
 ascat.output <- ascat.runAscat(ascat.bc, gamma=0.8)
@@ -52,6 +53,8 @@ ascat.output <- ascat.runAscat(ascat.bc, gamma=0.8)
 cnvs=ascat.output$segments[ascat.output$segments[,"nMajor"]!=1 | ascat.output$segments[,"nMinor"]!=1,2:6]
 write.table(cnvs, file=paste(tumorname,".gamma0.8.cnvs.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
 #Write out purity and ploidy info
-summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
-colnames(summary) <- c("AberrantCellFraction","Ploidy")
-write.table(summary, file=paste(tumorname,".gamma0.8.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+if (exists(ascat.output$aberrantcellfraction) & exists(ascat.output$ploidy)) {
+    summary <- matrix(c(ascat.output$aberrantcellfraction, ascat.output$ploidy), ncol=2, byrow=TRUE)
+    colnames(summary) <- c("AberrantCellFraction","Ploidy")
+    write.table(summary, file=paste(tumorname,".gamma0.8.purityploidy.txt",sep=""), sep="\t", quote=F, row.names=F, col.names=T)
+}
