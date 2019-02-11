@@ -64,7 +64,7 @@ if (step == 'mapping' && !checkExactlyOne([params.test, params.sample, params.sa
   exit 1, 'Please define which samples to work on by providing exactly one of the --test, --sample or --sampleDir options'
 if (!SarekUtils.checkReferenceMap(referenceMap)) exit 1, 'Missing Reference file(s), see --help for more information'
 
-if (params.test && params.genome in ['GRCh37', 'GRCh38']) {
+if (params.test && params.genome in ['GRCh37', 'GRCh38', 'GRCm38']) {
   referenceMap.intervals = file("$workflow.projectDir/repeats/tiny_${params.genome}.list")
 }
 
