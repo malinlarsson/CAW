@@ -280,8 +280,8 @@ def parse_mutect2(vcf, tumorid, normalid):
                 info=line.split("\t")
                 pos=info[0]+'_'+info[1]
                 vcfinfo=info[0]+'\t'+info[1]+'\t'+info[3]+'\t'+info[4]
-                ad_tumor=info[datacolumn['TUMOR']].split(":")[1]
-                ad_normal=info[datacolumn['NORMAL']].split(":")[1]
+                ad_tumor=info[datacolumn[tumorid]].split(":")[1]
+                ad_normal=info[datacolumn[normalid]].split(":")[1]
                 ref=info[3]
                 alt=info[4]
                 alt_alleles = alt.split(",")
