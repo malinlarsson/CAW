@@ -397,7 +397,7 @@ def parse_strelka_snvs(vcf):
 
 def main():
     args = mkParser()
-    mergeVCFs()
+    mergeVCFs(args.tumorid, args.normalid, args.mutect1vcf, args.mutect2vcf, args.strelkavcf, args.genomeindex)
 
 main()
 
