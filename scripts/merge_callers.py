@@ -23,8 +23,8 @@ def mkParser():
 
 
 def mergeVCFs(tumorid, normalid, mutect1vcf, mutect2vcf, strelkavcf, genomeindex):
-    mutect2=parse_mutect2(mutect2vcf)
-    mutect1=parse_mutect2(mutect1vcf)
+    mutect2=parse_mutect2(mutect2vcf, tumorid, normalid)
+    mutect1=parse_mutect2(mutect1vcf, tumorid, normalid)
     strelka=parse_strelka_snvs(strelkavcf)
     generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeindex)
     plot_allele_freqs(mutect1, mutect2, strelka, tumorid)
@@ -242,7 +242,7 @@ def sort_positions(positions, genomeIndex):
     return sorted
 
 
-def parse_mutect2(vcf):
+def parse_mutect2(vcf, tumorid, normalid):
     snvs = {}
     indels = {}
     datacolumn = {}
@@ -255,7 +255,7 @@ def parse_mutect2(vcf):
                 if info[col] in [tumorid, normalid]:
                     datacolumn[info[col]] = col
                 else:
-                    print "ERROR: MuTect2 VCF file does not contain column for TUMOR or NORMAL"
+                    print "ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect2 vcf"
                     break
         if not line.startswith("#"):
             filter1=re.compile('alt_allele_in_normal')
