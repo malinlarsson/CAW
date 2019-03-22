@@ -14,7 +14,7 @@ from datetime import datetime
 def mkParser():
 	parser = argparse.ArgumentParser(description = "merge variants from different callers and generates statistics")
   	parser.add_argument("--tumorID", type = str, help="Tumor sample ID", required = True)
-	parser.add_argument("--normalID", type=str, help="Normal sample ID', required=True)
+	parser.add_argument("--normalID", type=str, help="Normal sample ID", required=True)
 	parser.add_argument("--mutect1VCF", type=str, help="MuTect1 VCF file", required=True)
 	parser.add_argument("--mutect2VCF", type=str, help="MuTect1 VCF file", required=True)
 	parser.add_argument("--strelkaVCF", type=str, help="Strelka VCF file", required=True)
