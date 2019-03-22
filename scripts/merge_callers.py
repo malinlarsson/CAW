@@ -219,7 +219,8 @@ def generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeIndex):
             sf.write("%s\t%s\t%s\t%s\t%s\t%s\n" %(baseinfo,filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" %(vcfinfo[called_by[0]]))
         else:
-            print "Conflict in ref and alt alleles between callers "+called_by+" at pos "+pos
+            print "Conflict in ref and alt alleles between callers "
+                  #+called_by+" at pos "+pos
 
 
 def sort_positions(positions, genomeIndex):
