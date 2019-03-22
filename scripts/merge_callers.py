@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import click
+#import click
 import re
 import sys
 import matplotlib
