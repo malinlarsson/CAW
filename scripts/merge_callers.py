@@ -252,7 +252,7 @@ def parse_mutect2(vcf):
         if line.startswith("#CHROM"):
             info = line.split("\t")
             for col in range(9, len(info)):
-                if info[col] in ['TUMOR', 'NORMAL']:
+                if info[col] in [tumorid, normalid]:
                     datacolumn[info[col]] = col
                 else:
                     print "ERROR: MuTect2 VCF file does not contain column for TUMOR or NORMAL"
