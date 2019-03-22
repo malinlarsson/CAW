@@ -396,8 +396,8 @@ def parse_strelka_snvs(vcf):
     return {'snvs':snvs}
 
 def main():
-	args = mkParser()
-    	mergeVCFs()
+    args = mkParser()
+    mergeVCFs()
 
 main()
 
