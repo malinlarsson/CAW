@@ -44,6 +44,8 @@ def plot_allele_freqs(mutect1, mutect2, strelka, tumorid):
     antal=0
     for pos in all_snvs:
 
+        print pos
+
         #this_variant=np.empty(12)
         this_variant=np.empty(10)
         this_variant[:]=-999
