@@ -326,9 +326,11 @@ def parse_mutect1(vcf, tumorid, normalid):
                     print "ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect1 vcf"
                     break
         if not line.startswith("#"):
-            filter1=re.compile('REJECT')
+            filter1=re.compile('LowEVS')
             f1=filter1.search(line)
-            if not (f1):
+            filter2 = re.compile('LowDepth')
+            f2=filter2.search(line)
+            if not (f1 or f2):
                 info=line.split("\t")
                 pos = info[0] + '_' + info[1]
                 vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + info[4]
