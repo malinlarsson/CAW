@@ -330,6 +330,7 @@ def parse_mutect1(vcf, tumorid, normalid):
             f1=filter1.search(line)
             filter2 = re.compile('LowDepth')
             f2=filter2.search(line)
+            print f1
             if not (f1):
                 info=line.split("\t")
                 pos = info[0] + '_' + info[1]
