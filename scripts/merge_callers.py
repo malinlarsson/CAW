@@ -326,12 +326,8 @@ def parse_mutect1(vcf, tumorid, normalid):
                     print "ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect1 vcf"
                     break
         if not line.startswith("#"):
-            filter1=re.compile('LowEVS')
-            f1=filter1.search(line)
-            filter2 = re.compile('LowDepth')
-            f2=filter2.search(line)
-            print line
-            print f1
+            filter1 = re.compile('REJECT')
+            f1 = filter1.search(line)
             if not (f1):
                 info=line.split("\t")
                 pos = info[0] + '_' + info[1]
@@ -366,41 +362,49 @@ def parse_strelka_snvs(vcf):
                     print "ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL"
                     break
         if not line.startswith("#"):
-            info=line.split("\t")
-            pos=info[0]+'_'+info[1]
-            ref=info[3]
-            alt=info[4]
-            ad_normal = {}
-            ad_tumor = {}
-            #Using tiers 2 data
-            ad_normal['A']=int(info[datacolumn['NORMAL']].split(":")[4].split(",")[1])
-            ad_normal['C']=int(info[datacolumn['NORMAL']].split(":")[5].split(",")[1])
-            ad_normal['G']=int(info[datacolumn['NORMAL']].split(":")[6].split(",")[1])
-            ad_normal['T']=int(info[datacolumn['NORMAL']].split(":")[7].split(",")[1])
-            ad_tumor['A'] = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[1])
-            ad_tumor['C'] = int(info[datacolumn['TUMOR']].split(":")[5].split(",")[1])
-            ad_tumor['G'] = int(info[datacolumn['TUMOR']].split(":")[6].split(",")[1])
-            ad_tumor['T'] = int(info[datacolumn['TUMOR']].split(":")[7].split(",")[1])
-            snvs[pos] = {}
-            snvs[pos]['ad'] = {}
-            # If several alternative alleles are detected in the tumor, report the most highly abundant one and print a warning message.
-            alt_allele=''
-            alt_depth_tumor = 0
-            alt_alt_normal = 0
-            alt_alleles=alt.split(",")
-            for allele in alt_alleles:
-                if ad_tumor[allele] > alt_depth_tumor:
-                    alt_depth_tumor=ad_tumor[allele]
-                    alt_depth_normal=ad_normal[allele]
-                    alt_allele=allele
-            if len(alt) > 1:
-                print "WARNING: Strelka variant with multiple alternative alleles detected. Reporting the alternative allele with highest read count:"
-                print line
 
-            vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt_allele
-            snvs[pos]['info'] = vcfinfo
-            snvs[pos]['ad']['tumor']=str(ad_tumor[ref])+','+str(alt_depth_tumor)
-            snvs[pos]['ad']['normal']=str(ad_normal[ref])+','+str(alt_depth_normal)
+            filter1 = re.compile('LowEVS')
+            f1 = filter1.search(line)
+            filter2 = re.compile('LowDepth')
+            f2 = filter2.search(line)
+            print line
+            print f1
+            if not (f1):
+                info=line.split("\t")
+                pos=info[0]+'_'+info[1]
+                ref=info[3]
+                alt=info[4]
+                ad_normal = {}
+                ad_tumor = {}
+                #Using tiers 2 data
+                ad_normal['A']=int(info[datacolumn['NORMAL']].split(":")[4].split(",")[1])
+                ad_normal['C']=int(info[datacolumn['NORMAL']].split(":")[5].split(",")[1])
+                ad_normal['G']=int(info[datacolumn['NORMAL']].split(":")[6].split(",")[1])
+                ad_normal['T']=int(info[datacolumn['NORMAL']].split(":")[7].split(",")[1])
+                ad_tumor['A'] = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[1])
+                ad_tumor['C'] = int(info[datacolumn['TUMOR']].split(":")[5].split(",")[1])
+                ad_tumor['G'] = int(info[datacolumn['TUMOR']].split(":")[6].split(",")[1])
+                ad_tumor['T'] = int(info[datacolumn['TUMOR']].split(":")[7].split(",")[1])
+                snvs[pos] = {}
+                snvs[pos]['ad'] = {}
+                # If several alternative alleles are detected in the tumor, report the most highly abundant one and print a warning message.
+                alt_allele=''
+                alt_depth_tumor = 0
+                alt_alt_normal = 0
+                alt_alleles=alt.split(",")
+                for allele in alt_alleles:
+                    if ad_tumor[allele] > alt_depth_tumor:
+                        alt_depth_tumor=ad_tumor[allele]
+                        alt_depth_normal=ad_normal[allele]
+                        alt_allele=allele
+                if len(alt) > 1:
+                    print "WARNING: Strelka variant with multiple alternative alleles detected. Reporting the alternative allele with highest read count:"
+                    print line
+
+                vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt_allele
+                snvs[pos]['info'] = vcfinfo
+                snvs[pos]['ad']['tumor']=str(ad_tumor[ref])+','+str(alt_depth_tumor)
+                snvs[pos]['ad']['normal']=str(ad_normal[ref])+','+str(alt_depth_normal)
 
     return {'snvs':snvs}
 
