@@ -369,7 +369,7 @@ def parse_strelka_snvs(vcf):
             f2 = filter2.search(line)
             print line
             print f1
-            if not (f1):
+            if not (f1 or f2):
                 info=line.split("\t")
                 pos=info[0]+'_'+info[1]
                 ref=info[3]
