@@ -129,7 +129,7 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
 
 
 
-def generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeIndex):
+def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     snv_file=tumorid+'.snvs.vcf'
     avinput=tumorid+'.avinput'
     sf = open(snv_file, 'w')
@@ -147,15 +147,13 @@ def generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeIndex):
     sf.write("%s\n" %("##FORMAT=<ID=ADS,Number=.,Type=Integer,Description=\"Allelic depths reported by Strelka for the ref and alt alleles in the order listed\""))
     sf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %('#CHROM', 'POS','ID', 'REF', 'ALT','QUAL', 'FILTER', 'INFO','FORMAT', tumorid, normalid))
     #All mutated snvs:
-    all_snvs=set(mutect1['snvs'].keys()+mutect2['snvs'].keys()+strelka['snvs'].keys())
+    all_snvs=set(mutect2['snvs'].keys()+strelka['snvs'].keys())
     antal=0
     sorted_pos=sort_positions(all_snvs, genomeIndex)
     for pos in sorted_pos:
         #for pos in all_snvs:
         vcfinfo = {}
         #Which caller(s) detected the variant?
-        if pos in mutect1['snvs']:
-            vcfinfo['mutect1']=mutect1['snvs'][pos]['info']
         if pos in mutect2['snvs']:
             vcfinfo['mutect2']=mutect2['snvs'][pos]['info']
         if pos in strelka['snvs']:
@@ -168,12 +166,7 @@ def generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeIndex):
             gf_normal=''
             callers=''
             for c in called_by:
-                if c=='mutect1':
-                    callers=callers+'M1;'
-                    format=format+'ADM1:'
-                    gf_tumor=gf_tumor+mutect1['snvs'][pos]['ad']['tumor']+':'
-                    gf_normal=gf_normal+mutect1['snvs'][pos]['ad']['normal']+':'
-                elif c=='mutect2':
+                if c=='mutect2':
                     callers=callers+'M2;'
                     format=format+'ADM2:'
                     gf_tumor=gf_tumor+mutect2['snvs'][pos]['ad']['tumor']+':'
@@ -189,7 +182,7 @@ def generate_output(mutect1, mutect2, strelka, tumorid, normalid, genomeIndex):
             gf_normal = gf_normal[:-1]
             antal = antal+1
             filter="DISCORDANT"
-            if len(called_by)==3:
+            if len(called_by)==2:
                 filter="CONCORDANT"
             vcfinfolist=vcfinfo[called_by[0]].split('\t')
             baseinfo=vcfinfolist[0]+'\t'+vcfinfolist[1]+'\tNA\t'+vcfinfolist[2]+'\t'+vcfinfolist[3]+'\t'+'.'
