@@ -94,7 +94,7 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
     #Create plots and print to PDF file
     numBoxes=5
     pp = PdfPages(tumorid+'_allele_freqs.pdf')
-    #fig, ax1 = plt.subplots(figsize=(10, 6))
+    fig, ax1 = plt.subplots(figsize=(7, 6))
     plt.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
     x=range(1, len(columns)+1)
     bp = plt.boxplot(allele_freqs_nonempty, notch=0, sym='+', vert=1, whis=1.5)
