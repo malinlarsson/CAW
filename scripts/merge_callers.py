@@ -218,8 +218,6 @@ def parse_mutect2(vcf, tumorid, normalid):
     snvs = {}
     indels = {}
     datacolumn = {}
-
-
     for line in gzip.open(vcf, 'r'):
         line=line.strip()
         # Extract column in vcf file for "TUMOR" and "NORMAL"
