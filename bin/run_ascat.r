@@ -25,7 +25,7 @@ options(bitmapType='cairo')
 ascat.bc <- ascat.loadData(Tumor_LogR_file=tumorlogr, Tumor_BAF_file=tumorbaf, Germline_LogR_file=normallogr, Germline_BAF_file=normalbaf)
 
 #GC wave correction
-ascat.bc = ascat.GCcorrect(ascat.bc, gcfile)
+#ascat.bc = ascat.GCcorrect(ascat.bc, gcfile)
 
 #Plot the raw data
 ascat.plotRawData(ascat.bc)
