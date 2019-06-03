@@ -3,6 +3,7 @@
 import argparse
 import re
 import sys
+import gzip
 import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as plt
@@ -217,7 +218,9 @@ def parse_mutect2(vcf, tumorid, normalid):
     snvs = {}
     indels = {}
     datacolumn = {}
-    for line in open(vcf, 'r'):
+
+
+    for line in gzip.open(vcf, 'r'):
         line=line.strip()
         # Extract column in vcf file for "TUMOR" and "NORMAL"
         if line.startswith("#CHROM"):
@@ -283,7 +286,7 @@ def parse_mutect2(vcf, tumorid, normalid):
 def parse_mutect1(vcf, tumorid, normalid):
     snvs = {}
     datacolumn = {}
-    for line in open(vcf, 'r'):
+    for line in gzip.open(vcf, 'r'):
         line=line.strip()
         # Extract column in vcf file for each sample
         if line.startswith("#CHROM"):
