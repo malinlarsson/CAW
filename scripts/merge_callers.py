@@ -320,7 +320,7 @@ def parse_mutect1(vcf, tumorid, normalid):
 def parse_strelka_snvs(vcf):
     snvs = {}
     datacolumn = {}
-    for line in open(vcf, 'r'):
+    for line in gzip.open(vcf, 'r'):
         line=line.strip()
         # Extract column in vcf file for "TUMOR" and "NORMAL"
         if line.startswith("#CHROM"):
