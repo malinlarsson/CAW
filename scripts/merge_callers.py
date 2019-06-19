@@ -312,7 +312,7 @@ def parse_mutect2(vcf, tumorid, normalid):
             filter10=re.compile('PASS')
             f10=filter10.search(line)
             #if not (f1 or f2 or f3 or f4 or f5 or f6 or f7 or f8 or f9):
-	        if (f10):
+            if (f10):
                 info=line.split("\t")
                 pos=info[0]+'_'+info[1]
                 vcfinfo=info[0]+'\t'+info[1]+'\t'+info[3]+'\t'+info[4]
