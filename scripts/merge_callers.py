@@ -137,9 +137,6 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     avinput=tumorid+'.avinput'
     sf = open(snv_file, 'w')
     ai = open(avinput, 'w')
-    if = open(snv_file, 'w')
-
-
     #Writing snv file
     sf.write("%s\n" %("##fileformat=VCFv4.2"))
     sf.write("%s%s\n" %("##date=",str(datetime.now())))
