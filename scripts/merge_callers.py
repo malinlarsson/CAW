@@ -137,6 +137,8 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     avinput=tumorid+'.avinput'
     sf = open(snv_file, 'w')
     ai = open(avinput, 'w')
+    inf = open(all_indels, 'w')
+
     #Writing snv file
     sf.write("%s\n" %("##fileformat=VCFv4.2"))
     sf.write("%s%s\n" %("##date=",str(datetime.now())))
@@ -195,18 +197,18 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
                   #+called_by+" at pos "+pos
 
     # Writing indel file
-    sf.write("%s\n" % ("##fileformat=VCFv4.2"))
-    sf.write("%s%s\n" % ("##date=", str(datetime.now())))
-    sf.write("%s%s\n" % ("##source=", sys.argv[0]))
-    sf.write("%s\n" % ("##FILTER=<ID=CONCORDANT,Description=\"Called by both MuTect2 and Strelka)\""))
-    sf.write("%s\n" % ("##FILTER=<ID=DISCORDANT,Description=\"Only called by one caller\""))
-    sf.write("%s\n" % ("##INFO=<ID=M2,Number=.,Type=String,Description=\"Called by MuTect2\""))
-    sf.write("%s\n" % ("##INFO=<ID=S,Number=.,Type=String,Description=\"Called by Strelka\""))
-    sf.write("%s\n" % (
+    inf.write("%s\n" % ("##fileformat=VCFv4.2"))
+    inf.write("%s%s\n" % ("##date=", str(datetime.now())))
+    inf.write("%s%s\n" % ("##source=", sys.argv[0]))
+    inf.write("%s\n" % ("##FILTER=<ID=CONCORDANT,Description=\"Called by both MuTect2 and Strelka)\""))
+    inf.write("%s\n" % ("##FILTER=<ID=DISCORDANT,Description=\"Only called by one caller\""))
+    inf.write("%s\n" % ("##INFO=<ID=M2,Number=.,Type=String,Description=\"Called by MuTect2\""))
+    inf.write("%s\n" % ("##INFO=<ID=S,Number=.,Type=String,Description=\"Called by Strelka\""))
+    inf.write("%s\n" % (
         "##FORMAT=<ID=ADM2,Number=.,Type=Integer,Description=\"Allelic depths reported by MuTect2 for the ref and alt alleles in the order listed\""))
-    sf.write("%s\n" % (
+    inf.write("%s\n" % (
         "##FORMAT=<ID=ADS,Number=.,Type=Integer,Description=\"Allelic depths reported by Strelka for the ref and alt alleles in the order listed\""))
-    sf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (
+    inf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (
     '#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT', tumorid, normalid))
     # All mutated snvs:
     all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
@@ -249,7 +251,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             vcfinfolist = vcfinfo[called_by[0]].split('\t')
             baseinfo = vcfinfolist[0] + '\t' + vcfinfolist[1] + '\tNA\t' + vcfinfolist[2] + '\t' + vcfinfolist[
                 3] + '\t' + '.'
-            sf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
+            inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
         else:
             print "Conflict in ref and alt alleles between callers "
