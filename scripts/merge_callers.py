@@ -145,7 +145,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     sf.write("%s\n" %("##FILTER=<ID=DISCORDANT,Description=\"Only called by one caller\""))
     sf.write("%s\n" %("##INFO=<ID=M2,Number=.,Type=String,Description=\"Called by MuTect2\""))
     sf.write("%s\n" %("##INFO=<ID=S,Number=.,Type=String,Description=\"Called by Strelka\""))
-     sf.write("%s\n" %("##FORMAT=<ID=ADM2,Number=.,Type=Integer,Description=\"Allelic depths reported by MuTect2 for the ref and alt alleles in the order listed\""))
+    sf.write("%s\n" %("##FORMAT=<ID=ADM2,Number=.,Type=Integer,Description=\"Allelic depths reported by MuTect2 for the ref and alt alleles in the order listed\""))
     sf.write("%s\n" %("##FORMAT=<ID=ADS,Number=.,Type=Integer,Description=\"Allelic depths reported by Strelka for the ref and alt alleles in the order listed\""))
     sf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" %('#CHROM', 'POS','ID', 'REF', 'ALT','QUAL', 'FILTER', 'INFO','FORMAT', tumorid, normalid))
     #All mutated snvs:
