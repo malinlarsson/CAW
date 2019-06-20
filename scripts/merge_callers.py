@@ -216,10 +216,11 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
         # for pos in all_snvs:
-        print pos
+
         vcfinfo = {}
         # Which caller(s) detected the variant?
         if pos in mutect2['indels']:
+            print pos
             vcfinfo['mutect2'] = mutect2['indels'][pos]['info']
         if pos in strelka['indels']:
             vcfinfo['strelka'] = strelka['indels'][pos]['info']
