@@ -491,8 +491,8 @@ def parse_strelka(vcf, indelvcf):
 
                 vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt
                 indels[pos]['info'] = vcfinfo
-                indels[pos]['ad']['tumor']= refCounts_tumor+','+saltCounts_tumor
-                indels[pos]['ad']['normal']=refCounts_normal+','+altCounts_normal
+                indels[pos]['ad']['tumor']=str(refCounts_tumor)+','+str(altCounts_tumor)
+                indels[pos]['ad']['normal']=str(refCounts_normal)+','+str(altCounts_normal)
 
     return {'indels':indels,'snvs':snvs}
 
