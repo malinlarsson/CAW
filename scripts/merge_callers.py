@@ -221,7 +221,6 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
         vcfinfo = {}
         # Which caller(s) detected the variant?
         if pos in mutect2['indels']:
-            print pos
             vcfinfo['mutect2'] = mutect2['indels'][pos]['info']
         if pos in strelka['indels']:
             vcfinfo['strelka'] = strelka['indels'][pos]['info']
@@ -471,8 +470,6 @@ def parse_strelka(vcf, indelvcf):
                 pos=info[0]+'_'+info[1]
                 ref=info[3]
                 alt=info[4]
-                ad_normal = {}
-                ad_tumor = {}
                 #Using tiers 1 data
                 refCounts_normal=int(info[datacolumn['NORMAL']].split(":")[3].split(",")[0])
                 altCounts_normal = int(info[datacolumn['NORMAL']].split(":")[4].split(",")[0])
