@@ -211,7 +211,8 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     inf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (
     '#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT', tumorid, normalid))
     # All mutated snvs:
-    all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
+    #all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
+    all_indels = set(mutect2['indels'].keys())
     antal = 0
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
