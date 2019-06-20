@@ -258,7 +258,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
         else:
             print "Conflict in ref and alt alleles between callers "
-            d_alt++
+            d_alt=d_alt+1
             print "mutect2"+vcfinfo['mutect2'] = mutect2['indels'][pos]['info']
             print "strelka"+vcfinfo['strelka'] = mutect2['indels'][pos]['info']
             # +called_by+" at pos "+pos
