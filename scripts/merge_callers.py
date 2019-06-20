@@ -328,6 +328,8 @@ def parse_mutect2(vcf, tumorid, normalid):
                     if len(ref)>1 or len(alt)>1:
 
                         print "this is an indel!"
+                        print ad_tumor
+                        print ad_normal
                         indels[pos] = {}
                         indels[pos]['info']=vcfinfo
                         indels[pos]['ad'] = {}
