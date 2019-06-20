@@ -326,6 +326,8 @@ def parse_mutect2(vcf, tumorid, normalid):
                 if len(alt_alleles) == 1:
                     #Indels
                     if len(ref)>1 or len(alt)>1:
+
+                        print "this is an indel!"
                         indels[pos] = {}
                         indels[pos]['info']=vcfinfo
                         indels[pos]['ad'] = {}
