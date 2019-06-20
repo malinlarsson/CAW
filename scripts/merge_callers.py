@@ -216,8 +216,9 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     antal = 0
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
-        # for pos in all_snvs:
 
+        #Number of calls with different alt alleles:
+        d_alt=0
         vcfinfo = {}
         # Which caller(s) detected the variant?
         if pos in mutect2['indels']:
@@ -257,7 +258,11 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
         else:
             print "Conflict in ref and alt alleles between callers "
+            d_alt++
+            print "mutect2"+vcfinfo['mutect2'] = mutect2['indels'][pos]['info']
+            print "strelka"+vcfinfo['strelka'] = mutect2['indels'][pos]['info']
             # +called_by+" at pos "+pos
+    print "antal med conflict: "+str(d_alt)
 
 def sort_positions(positions, genomeIndex):
     CHROMOSOMES = []
