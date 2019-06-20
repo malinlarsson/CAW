@@ -485,7 +485,7 @@ def parse_strelka(vcf, indelvcf):
 
                 alt_alleles=alt.split(",")
 
-                if len(alt) > 1:
+                if alt_alleles[1]:
                     print "WARNING: Strelka indel with multiple alternative alleles detected."
                     print line
 
