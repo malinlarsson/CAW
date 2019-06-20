@@ -23,7 +23,7 @@ def mkParser():
     return parser.parse_args()
 
 
-def mergeVCFs(tumorid, normalid,  mutect2vcf, strelkavcf, genomeindex):
+def mergeVCFs(tumorid, normalid,  mutect2vcf, strelkavcf, strelkaindelvcf, genomeindex):
     mutect2=parse_mutect2(mutect2vcf, tumorid, normalid)
     strelka=parse_strelka(strelkavcf, strelkaindelvcf)
     generate_output(mutect2, strelka, tumorid, normalid, genomeindex)
