@@ -44,7 +44,7 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
     antal=0
     for pos in all_snvs:
 
-        print pos
+        #print pos
 
         #this_variant=np.empty(12)
         this_variant=np.empty(5)
@@ -137,7 +137,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     avinput=tumorid+'.avinput'
     sf = open(snv_file, 'w')
     ai = open(avinput, 'w')
-    inf = open(all_indels, 'w')
+    inf = open(indel_file, 'w')
 
     #Writing snv file
     sf.write("%s\n" %("##fileformat=VCFv4.2"))
@@ -213,8 +213,8 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     # All mutated snvs:
     all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
     antal = 0
-    sorted_pos = sort_positions(all_indels, genomeIndex)
-    for pos in sorted_pos:
+    sorted_pos_indels = sort_positions(all_indels, genomeIndex)
+    for pos in sorted_pos_indels:
         # for pos in all_snvs:
         vcfinfo = {}
         # Which caller(s) detected the variant?
