@@ -389,6 +389,7 @@ def parse_mutect1(vcf, tumorid, normalid):
     return {'snvs':snvs}
 
 def parse_strelka_snvs(vcf):
+    #Please see this post for parsing strelka SNVs: https://github.com/Illumina/strelka/tree/master/docs/userGuide
     snvs = {}
     datacolumn = {}
     for line in gzip.open(vcf, 'r'):
@@ -415,15 +416,15 @@ def parse_strelka_snvs(vcf):
                 alt=info[4]
                 ad_normal = {}
                 ad_tumor = {}
-                #Using tiers 2 data
-                ad_normal['A']=int(info[datacolumn['NORMAL']].split(":")[4].split(",")[1])
-                ad_normal['C']=int(info[datacolumn['NORMAL']].split(":")[5].split(",")[1])
-                ad_normal['G']=int(info[datacolumn['NORMAL']].split(":")[6].split(",")[1])
-                ad_normal['T']=int(info[datacolumn['NORMAL']].split(":")[7].split(",")[1])
-                ad_tumor['A'] = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[1])
-                ad_tumor['C'] = int(info[datacolumn['TUMOR']].split(":")[5].split(",")[1])
-                ad_tumor['G'] = int(info[datacolumn['TUMOR']].split(":")[6].split(",")[1])
-                ad_tumor['T'] = int(info[datacolumn['TUMOR']].split(":")[7].split(",")[1])
+                #Using tiers 1 data
+                ad_normal['A']=int(info[datacolumn['NORMAL']].split(":")[4].split(",")[0])
+                ad_normal['C']=int(info[datacolumn['NORMAL']].split(":")[5].split(",")[0])
+                ad_normal['G']=int(info[datacolumn['NORMAL']].split(":")[6].split(",")[0])
+                ad_normal['T']=int(info[datacolumn['NORMAL']].split(":")[7].split(",")[0])
+                ad_tumor['A'] = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[0])
+                ad_tumor['C'] = int(info[datacolumn['TUMOR']].split(":")[5].split(",")[0])
+                ad_tumor['G'] = int(info[datacolumn['TUMOR']].split(":")[6].split(",")[0])
+                ad_tumor['T'] = int(info[datacolumn['TUMOR']].split(":")[7].split(",")[0])
                 snvs[pos] = {}
                 snvs[pos]['ad'] = {}
                 # If several alternative alleles are detected in the tumor, report the most highly abundant one and print a warning message.
@@ -446,6 +447,58 @@ def parse_strelka_snvs(vcf):
                 snvs[pos]['ad']['normal']=str(ad_normal[ref])+','+str(alt_depth_normal)
 
     return {'snvs':snvs}
+
+def parse_strelka_indels(vcf):
+    # Please see this post for parsing strelka indels: https://github.com/Illumina/strelka/tree/master/docs/userGuide
+    indels = {}
+    datacolumn = {}
+    for line in gzip.open(vcf, 'r'):
+        line=line.strip()
+        # Extract column in vcf file for "TUMOR" and "NORMAL"
+        if line.startswith("#CHROM"):
+            info = line.split("\t")
+            for col in range(9, len(info)):
+                if info[col] in ['TUMOR', 'NORMAL']:
+                    datacolumn[info[col]] = col
+                else:
+                    print "ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL"
+                    break
+        if not line.startswith("#"):
+
+            filter1 = re.compile('LowEVS')
+            f1 = filter1.search(line)
+            filter2 = re.compile('LowDepth')
+            f2 = filter2.search(line)
+            if not (f1 or f2):
+                info=line.split("\t")
+                pos=info[0]+'_'+info[1]
+                ref=info[3]
+                alt=info[4]
+                ad_normal = {}
+                ad_tumor = {}
+                #Using tiers 1 data
+                refCounts_normal=int(info[datacolumn['NORMAL']].split(":")[3].split(",")[0])
+                altCounts_normal = int(info[datacolumn['NORMAL']].split(":")[4].split(",")[0])
+                refCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[3].split(",")[0])
+                altCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[0])
+
+                indels[pos] = {}
+                indels[pos]['ad'] = {}
+                # If several alternative alleles are detected in the tumor, report the most highly abundant one and print a warning message.
+
+                alt_alleles=alt.split(",")
+
+                if len(alt) > 1:
+                    print "WARNING: Strelka indel with multiple alternative alleles detected.
+                    print line
+
+                vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt
+                indels[pos]['info'] = vcfinfo
+                indels[pos]['ad']['tumor']= refCounts_tumor+','+saltCounts_tumor
+                indels[pos]['ad']['normal']=refCounts_normal+','+altCounts_normal
+
+    return {'indels':indels}
+
 
 def main():
     args = mkParser()
