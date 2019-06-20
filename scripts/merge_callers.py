@@ -345,7 +345,7 @@ def parse_mutect2(vcf, tumorid, normalid):
                         snvs[pos]['ad'] = {}
                         snvs[pos]['ad']['tumor']=ad_tumor
                         snvs[pos]['ad']['normal']=ad_normal
-                else:
+                #else:
                     #print "WARNING: MuTect2 variant with multiple alternative alleles detected; skipped and not used in merged callset:"
                     #print line
     return {'indels':indels,'snvs':snvs}
