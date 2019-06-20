@@ -500,7 +500,7 @@ def parse_strelka(vcf, indelvcf):
 
 def main():
     args = mkParser()
-    mergeVCFs(args.tumorid, args.normalid, args.mutect2vcf, args.strelkavcf, args.genomeindex)
+    mergeVCFs(args.tumorid, args.normalid, args.mutect2vcf, args.strelkavcf, args.strelkaindelvcf, args.genomeindex)
 
 main()
 
