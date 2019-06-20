@@ -61,12 +61,12 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
             this_variant[0]=float(vcfinfo['mutect2'].split(",")[1])/(float(vcfinfo['mutect2'].split(",")[0])+float(vcfinfo['mutect2'].split(",")[1]))
             count[0]=count[0]+1
             if this_variant[0]>1:
-                print this_variant[0]
-                print mutect2['snvs'][pos]['ad']['tumor']
+                #print this_variant[0]
+                #print mutect2['snvs'][pos]['ad']['tumor']
 
         if 'mutect2' not in vcfinfo.keys() and 'strelka' in vcfinfo.keys():
-            print this_variant[0]
-            print vcfinfo['strelka']
+            #print this_variant[0]
+            #print vcfinfo['strelka']
             this_variant[1]=float(vcfinfo['strelka'].split(",")[1])/(float(vcfinfo['strelka'].split(",")[0])+float(vcfinfo['strelka'].split(",")[1]))
             count[1]=count[1]+1
 
