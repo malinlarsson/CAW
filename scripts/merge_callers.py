@@ -489,7 +489,7 @@ def parse_strelka_indels(vcf):
                 alt_alleles=alt.split(",")
 
                 if len(alt) > 1:
-                    print "WARNING: Strelka indel with multiple alternative alleles detected.
+                    print "WARNING: Strelka indel with multiple alternative alleles detected."
                     print line
 
                 vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt
