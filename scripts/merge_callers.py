@@ -25,7 +25,7 @@ def mkParser():
 
 def mergeVCFs(tumorid, normalid,  mutect2vcf, strelkavcf, genomeindex):
     mutect2=parse_mutect2(mutect2vcf, tumorid, normalid)
-    strelka=parse_strelka_snvs(strelkavcf)
+    strelka=parse_strelka(strelkavcf, strelkaindelvcf)
     generate_output(mutect2, strelka, tumorid, normalid, genomeindex)
     plot_allele_freqs(mutect2, strelka, tumorid)
 
@@ -211,8 +211,8 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     inf.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (
     '#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT', tumorid, normalid))
     # All mutated snvs:
-    #all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
-    all_indels = set(mutect2['indels'].keys())
+    all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
+
     antal = 0
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
@@ -388,7 +388,7 @@ def parse_mutect1(vcf, tumorid, normalid):
                     print line
     return {'snvs':snvs}
 
-def parse_strelka_snvs(vcf):
+def parse_strelka(vcf, indelvcf):
     #Please see this post for parsing strelka SNVs: https://github.com/Illumina/strelka/tree/master/docs/userGuide
     snvs = {}
     datacolumn = {}
@@ -446,13 +446,10 @@ def parse_strelka_snvs(vcf):
                 snvs[pos]['ad']['tumor']=str(ad_tumor[ref])+','+str(alt_depth_tumor)
                 snvs[pos]['ad']['normal']=str(ad_normal[ref])+','+str(alt_depth_normal)
 
-    return {'snvs':snvs}
 
-def parse_strelka_indels(vcf):
-    # Please see this post for parsing strelka indels: https://github.com/Illumina/strelka/tree/master/docs/userGuide
     indels = {}
     datacolumn = {}
-    for line in gzip.open(vcf, 'r'):
+    for line in gzip.open(indelvcf, 'r'):
         line=line.strip()
         # Extract column in vcf file for "TUMOR" and "NORMAL"
         if line.startswith("#CHROM"):
@@ -497,7 +494,8 @@ def parse_strelka_indels(vcf):
                 indels[pos]['ad']['tumor']= refCounts_tumor+','+saltCounts_tumor
                 indels[pos]['ad']['normal']=refCounts_normal+','+altCounts_normal
 
-    return {'indels':indels}
+    return {'indels':indels,'snvs':snvs}
+
 
 
 def main():
