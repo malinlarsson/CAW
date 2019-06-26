@@ -284,6 +284,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             vcfinfolist = vcfinfo[called_by[0]].split('\t')
             baseinfo = vcfinfolist[0] + '\t' + vcfinfolist[1] + '\tNA\t' + vcfinfolist[2] + '\t' + vcfinfolist[
                 3] + '\t' + '.'
+            print baseinfo
             inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
             d_alt = d_alt + 1
