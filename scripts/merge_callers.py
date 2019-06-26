@@ -289,7 +289,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             print callers
             print format
             print gf_tumor
-            print gt_normal
+            print gf_normal
             inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
             d_alt = d_alt + 1
