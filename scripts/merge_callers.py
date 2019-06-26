@@ -145,6 +145,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     sf.write("%s%s\n" %("##source=",sys.argv[0]))
     sf.write("%s\n" %("##FILTER=<ID=CONCORDANT,Description=\"Called by both MuTect2 and Strelka)\""))
     sf.write("%s\n" %("##FILTER=<ID=DISCORDANT,Description=\"Only called by one caller\""))
+    sf.write("%s\n" % ("##FILTER=<ID=CONFLICTING ALT ALLELES,Description=\"Callers reported different alternative alleles\""))
     sf.write("%s\n" %("##INFO=<ID=M2,Number=.,Type=String,Description=\"Called by MuTect2\""))
     sf.write("%s\n" %("##INFO=<ID=S,Number=.,Type=String,Description=\"Called by Strelka\""))
     sf.write("%s\n" %("##FORMAT=<ID=ADM2,Number=.,Type=Integer,Description=\"Allelic depths reported by MuTect2 for the ref and alt alleles in the order listed\""))
@@ -258,11 +259,34 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
         else:
-            print "Conflict in ref and alt alleles between callers "
+
+            format = ''
+            gf_tumor = ''
+            gf_normal = ''
+            callers = ''
+            for c in called_by:
+                if c == 'mutect2':
+                    callers = callers + 'M2;'
+                    format = format + 'ADM2:'
+                    gf_tumor = gf_tumor + mutect2['indels'][pos]['ad']['tumor'] + ':'
+                    gf_normal = gf_normal + mutect2['indels'][pos]['ad']['normal'] + ':'
+                elif c == 'strelka':
+                    callers = callers + 'S;'
+                    format = format + 'ADS:'
+                    gf_tumor = gf_tumor + strelka['indels'][pos]['ad']['tumor'] + ':'
+                    gf_normal = gf_normal + strelka['indels'][pos]['ad']['normal'] + ':'
+            callers = callers[:-1]
+            format = format[:-1]
+            gf_tumor = gf_tumor[:-1]
+            gf_normal = gf_normal[:-1]
+            antal = antal + 1
+            filter = "CONFLICTING ALT ALLELES"
+            vcfinfolist = vcfinfo[called_by[0]].split('\t')
+            baseinfo = vcfinfolist[0] + '\t' + vcfinfolist[1] + '\tNA\t' + vcfinfolist[2] + '\t' + vcfinfolist[
+                3] + '\t' + '.'
+            inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
+            ai.write("%s\n" % (vcfinfo[called_by[0]]))
             d_alt = d_alt + 1
-            print "mutect2 "+vcfinfo['mutect2']
-            print "strelka "+vcfinfo['strelka']
-            # +called_by+" at pos "+pos
     print "antal med conflict: "+str(d_alt)
     print "antal utan: "+str(antal)
 
