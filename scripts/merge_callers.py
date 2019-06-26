@@ -478,10 +478,10 @@ def parse_strelka(vcf, indelvcf):
                 ref=info[3]
                 alt=info[4]
                 #Using tiers 1 data
-                refCounts_normal=int(info[datacolumn['NORMAL']].split(":")[3].split(",")[0])
-                altCounts_normal = int(info[datacolumn['NORMAL']].split(":")[4].split(",")[0])
-                refCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[3].split(",")[0])
-                altCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[4].split(",")[0])
+                refCounts_normal=int(info[datacolumn['NORMAL']].split(":")[2].split(",")[0])
+                altCounts_normal = int(info[datacolumn['NORMAL']].split(":")[3].split(",")[0])
+                refCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[2].split(",")[0])
+                altCounts_tumor = int(info[datacolumn['TUMOR']].split(":")[3].split(",")[0])
 
                 indels[pos] = {}
                 indels[pos]['ad'] = {}
