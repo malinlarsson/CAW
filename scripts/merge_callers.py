@@ -219,7 +219,6 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
 
-        #Number of calls with different alt alleles:
 
         vcfinfo = {}
         # Which caller(s) detected the variant?
@@ -258,6 +257,8 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
                 3] + '\t' + '.'
             inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
+
+        # Calls with different alt alleles, means that they were calld by two callers.
         else:
 
             format = ''
@@ -281,9 +282,10 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             gf_normal = gf_normal[:-1]
             antal = antal + 1
             filter = "CONFLICTING ALT ALLELES"
-            vcfinfolist = vcfinfo[called_by[0]].split('\t')
-            baseinfo = vcfinfolist[0] + '\t' + vcfinfolist[1] + '\tNA\t' + vcfinfolist[2] + '\t' + vcfinfolist[
-                3] + '\t' + '.'
+            vcfinfolist_0 = vcfinfo[called_by[0]].split('\t')
+            vcfinfolist_1 = vcfinfo[called_by[1]].split('\t')
+
+            baseinfo = vcfinfolist_0[0] + '\t' + vcfinfolist_0[1] + '\tNA\t' + vcfinfolist_0[2] + ',' + vcfinfolist_1[2] + '\t' + vcfinfolist_0[3] + ',' + vcfinfolist_1[3] + '\t' + '.'
             print baseinfo
             print filter
             print callers
