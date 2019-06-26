@@ -194,7 +194,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             sf.write("%s\t%s\t%s\t%s\t%s\t%s\n" %(baseinfo,filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" %(vcfinfo[called_by[0]]))
         else:
-            print "Conflict in ref and alt alleles between callers "
+            print "Conflict in ref and alt alleles between callers for SNVs "
                   #+called_by+" at pos "+pos
 
     # Writing indel file
@@ -213,13 +213,10 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
     '#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT', tumorid, normalid))
     # All mutated snvs:
     all_indels = set(mutect2['indels'].keys() + strelka['indels'].keys())
-
     antal = 0
     d_alt = 0
     sorted_pos_indels = sort_positions(all_indels, genomeIndex)
     for pos in sorted_pos_indels:
-
-
         vcfinfo = {}
         # Which caller(s) detected the variant?
         if pos in mutect2['indels']:
@@ -284,19 +281,10 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             filter = "CONFLICTING ALT ALLELES"
             vcfinfolist_0 = vcfinfo[called_by[0]].split('\t')
             vcfinfolist_1 = vcfinfo[called_by[1]].split('\t')
-
             baseinfo = vcfinfolist_0[0] + '\t' + vcfinfolist_0[1] + '\tNA\t' + vcfinfolist_0[2] + ',' + vcfinfolist_1[2] + '\t' + vcfinfolist_0[3] + ',' + vcfinfolist_1[3] + '\t' + '.'
-            print baseinfo
-            print filter
-            print callers
-            print format
-            print gf_tumor
-            print gf_normal
             inf.write("%s\t%s\t%s\t%s\t%s\t%s\n" % (baseinfo, filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" % (vcfinfo[called_by[0]]))
-            d_alt = d_alt + 1
-    print "antal med conflict: "+str(d_alt)
-    print "antal utan: "+str(antal)
+
 
 def sort_positions(positions, genomeIndex):
     CHROMOSOMES = []
@@ -443,11 +431,13 @@ def parse_strelka(vcf, indelvcf):
                     break
         if not line.startswith("#"):
 
-            filter1 = re.compile('LowEVS')
-            f1 = filter1.search(line)
-            filter2 = re.compile('LowDepth')
-            f2 = filter2.search(line)
-            if not (f1 or f2):
+            #filter1 = re.compile('LowEVS')
+            #f1 = filter1.search(line)
+            #filter2 = re.compile('LowDepth')
+            #f2 = filter2.search(line)
+            filter = re.compile('PASS')
+            f = filter.search(line)
+            if (f):
                 info=line.split("\t")
                 pos=info[0]+'_'+info[1]
                 ref=info[3]
