@@ -55,7 +55,7 @@ do
   esac
 done
 
-RECAL_TSV=pwd
+RECAL_TSV=$pwd
 
 echo "Recal tsv: $RECAL_TSV"
 
