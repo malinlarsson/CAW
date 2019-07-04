@@ -132,8 +132,8 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
 
 
 def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
-    snv_file=tumorid+'.snvs.vcf'
-    indel_file=tumorid+'.indels.vcf'
+    snv_file=tumorid+'.SNVs.vcf'
+    indel_file=tumorid+'.INDELs.vcf'
     avinput=tumorid+'.avinput'
     sf = open(snv_file, 'w')
     ai = open(avinput, 'w')
