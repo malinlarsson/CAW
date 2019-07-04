@@ -4,11 +4,9 @@ set -xeuo pipefail
 ANNOTATE=false
 ANNOTATEVCF=''
 GENOME=GRCh38
-#for mouse we have a private genome base in our project folder:
-GENOMEBASE='/proj/uppstore2019024/private/Sarek/GRCm38_68'
-
-#for human and GRCh38, out comment line above and use this:
+#for human and GRCh38 we can use the central genome base on Uppmax (for mouse use --genomeBase on command line)
 #GENOMEBASE='/sw/data/uppnex/ToolBox/hg38bundle'
+CONTAINERPATH='/sw/data/uppnex/ToolBox/sarek'
 GERMLINE=false
 PROFILE=slurm
 REPORTS=true
@@ -19,6 +17,8 @@ TAG='latest'
 TOOLS='mutect2,strelka,manta,ascat'
 VARIANTCALLING=false
 CPUS=2
+NXFPATH='/proj/uppstore2017171/staff/malin/nextflow'
+SAREKPATH='/proj/uppstore2019024/private/Sarek/Sarek'
 
 while [[ $# -gt 0 ]]
 do
@@ -33,7 +33,7 @@ do
     shift # past argument
     shift # past value
     ;;
-    -c|--somatic)
+    -s|--somatic)
     SOMATIC=true
     shift # past argument
     ;;
@@ -78,6 +78,12 @@ do
     shift # past argument
     shift # past value
     ;;
+
+    -j|--project)
+    PROJECT=$2
+    shift # past argument
+    shift # past value
+    ;;
     -s|--step)
     STEP=$2
     shift # past argument
@@ -105,13 +111,10 @@ done
 
 function run_sarek() {
 	# https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
-	if [ -z ${TARGETBED+x} ]; then	# variable unset 
-		echo "$(tput setaf 1)nextflow run $@ -profile $PROFILE --genome $GENOME --genome_base $GENOMEBASE --tag $TAG --verbose$(tput sgr0) --max_cpus ${CPUS}"
-		nextflow run $@ -profile $PROFILE --genome $GENOME --genome_base $GENOMEBASE --tag $TAG --verbose --max_cpus ${CPUS}
-	else
-		echo "$(tput setaf 1)nextflow run $@ -profile $PROFILE --genome $GENOME --genome_base $GENOMEBASE --tag $TAG --verbose$(tput sgr0) --max_cpus ${CPUS} --targetBED ${TARGETBED}"
-		nextflow run $@ -profile $PROFILE --genome $GENOME --genome_base $GENOMEBASE --tag $TAG --verbose --max_cpus ${CPUS} --targetBED ${TARGETBED}
-	fi
+	 
+	echo "$(tput setaf 1)nextflow run $@ -profile $PROFILE --project $PROJECT --genome $GENOME --genome_base $GENOMEBASE --containerpath $CONTAINERPATH"
+	$NXFPATH/nextflow run $SAREKPATH/$@ -profile $PROFILE --project $PROJECT --genome $GENOME --genome_base $GENOMEBASE --containerpath $CONTAINERPATH
+	
 }
 
 if [[ $GERMLINE == true ]] && [[ $SOMATIC == true ]]
@@ -159,7 +162,7 @@ fi
 if [[ $SOMATIC == true ]] && [[ $SAMPLETSV != '' ]]
 then
   echo "$(tput setaf 1)Somatic with TSV$(tput sgr0)"
-  run_sarek main.nf --step $STEP --sample $SAMPLETSV
+  run_sarek main.nf  --sample $SAMPLETSV
 fi
 
 if [[ $SOMATIC == true ]] && [[ $VARIANTCALLING == true ]]
