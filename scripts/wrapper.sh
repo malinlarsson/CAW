@@ -1,6 +1,8 @@
 #!/bin/bash
 set -xeuo pipefail
 
+USAGE="\nwrapper.sh -j project -i sample.tsv -d sampleDir optional: -g genome -b genomeBase \n\n"
+
 #Default values for human (for mouse use -genomeBase and -genome on command line)
 GENOME='GRCh38'
 GENOMEBASE='/sw/data/uppnex/ToolBox/hg38bundle'
