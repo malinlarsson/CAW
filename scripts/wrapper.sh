@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xeuo pipefail
 
-USAGE:" wrapper.sh -j project -I sample.tsv -d sampleDir optional: -g genome -b genomeBase \n\n"
+USAGE=" wrapper.sh -j project -I sample.tsv -d sampleDir optional: -g genome -b genomeBase \n\n"
 
 #Default values for human (for mouse use -genomeBase and -genome on command line)
 GENOME='GRCh38'
