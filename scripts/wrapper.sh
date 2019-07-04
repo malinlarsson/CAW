@@ -11,7 +11,7 @@ VEPSIMG=
 PROFILE='slurm'
 
 #These paths needs to be modified for Bianca:
-NXFPATH='/proj/uppstore2019024/private/nextflow/'
+NXFPATH='/proj/uppstore2019024/private/nextflow'
 SAREKPATH='/proj/uppstore2019024/private/Sarek/Sarek'
 
 
