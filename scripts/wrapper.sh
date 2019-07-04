@@ -4,16 +4,19 @@ set -xeuo pipefail
 ANNOTATE=false
 ANNOTATEVCF=''
 GENOME=GRCh38
-GENOMEBASE=''
+#for mouse we have a private genome base in our project folder:
+GENOMEBASE='/proj/uppstore2019024/private/Sarek/GRCm38_68'
+
+#for human and GRCh38, out comment line above and use this:
+#GENOMEBASE='/sw/data/uppnex/ToolBox/hg38bundle'
 GERMLINE=false
-PROFILE=singularity
+PROFILE=slurm
 REPORTS=true
 SAMPLEDIR=''
 SAMPLETSV=''
 SOMATIC=false
-STEP='mapping'
 TAG='latest'
-TOOLS='haplotypecaller,strelka,manta'
+TOOLS='mutect2,strelka,manta,ascat'
 VARIANTCALLING=false
 CPUS=2
 
