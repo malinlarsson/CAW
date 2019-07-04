@@ -30,6 +30,11 @@ do
     shift # past argument
     shift # past value
     ;;
+    -d|--sampleDir)
+    SAMPLEDIR=$2
+    shift # past argument
+    shift # past value
+    ;;
     -p|--profile)
     PROFILE=$2
     shift # past argument
@@ -55,7 +60,7 @@ do
   esac
 done
 
-RECAL_SAMPLE=$PWD'Preprocessing/Recalibrated/recalibrated.tsv'
+RECAL_SAMPLE=$SAMPLEDIR'/Preprocessing/Recalibrated/recalibrated.tsv'
 
 echo "Recal tsv: $RECAL_SAMPLE"
 
