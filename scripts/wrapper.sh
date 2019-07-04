@@ -55,9 +55,11 @@ do
   esac
 done
 
-RECAL_TSV=$PWD
+RECAL_SAMPLE=$PWD'Preprocessing/Recalibrated/recalibrated.tsv'
 
-echo "Recal tsv: $RECAL_TSV"
+echo "Recal tsv: $RECAL_SAMPLE"
+
+
 
 
 
