@@ -15,8 +15,13 @@ while [[ $# -gt 0 ]]
 do
   key=$1
   case $key in
-   -g|--genome)
+    -g|--genome)
     GENOME=$2
+    shift # past argument
+    shift # past value
+    ;;
+    -b|--genomeBase)
+    GENOMEBASE=$2
     shift # past argument
     shift # past value
     ;;
@@ -50,11 +55,20 @@ do
   esac
 done
 
-#echo "$(tput setaf 1)nextflow run $@ -profile $PROFILE --project $PROJECT --genome $GENOME --genome_base $GENOMEBASE --containerpath $CONTAINERPATH"
-#	$NXFPATH/nextflow run $SAREKPATH/$@ -profile $PROFILE --project $PROJECT --genome $GENOME --genome_base $GENOMEBASE --containerpath $CONTAINERPATH
+RECAL_TSV=pwd
+
+echo "Recal tsv: $RECAL_TSV"
+
+
+
+#Preprocess the bam files
+echo "$NXFPATH/nextflow run $SAREKPATH/main.nf -profile $PROFILE --project $PROJECT --sample $SAMPLETSV --genome $GENOME --genome_base $GENOMEBASE --containerPath $CONTAINERPATH"
+
+#Run Haplotype caller for germline variants
+echo "$NXFPATH/nextflow run $SAREKPATH/germlineVC.nf -profile $PROFILE --project $PROJECT --sample $RECAL_TSV --genome $GENOME --genome_base $GENOMEBASE --containerPath $CONTAINERPATH --tools HaplotypeCaller"
 
 
 #run multiQC:
 echo "$NXFPATH/nextflow run $SAREKPATH/runMultiQC.nf -profile $PROFILE --project $PROJECT"
-$NXFPATH/nextflow run $SAREKPATH/runMultiQC.nf -profile $PROFILE --project $PROJECT
+#$NXFPATH/nextflow run $SAREKPATH/runMultiQC.nf -profile $PROFILE --project $PROJECT
 	
