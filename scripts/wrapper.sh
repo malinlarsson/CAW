@@ -7,7 +7,6 @@ USAGE="wrapper.sh -j project -I sample.tsv -d sampleDir optional: -g genome -b g
 GENOME='GRCh38'
 GENOMEBASE='/sw/data/uppnex/ToolBox/hg38bundle'
 CONTAINERPATH='/sw/data/uppnex/ToolBox/sarek'
-VEPSIMG=
 PROFILE='slurm'
 
 #These paths needs to be modified for Bianca, or use -nxfpaht and -sarekpath on command line
