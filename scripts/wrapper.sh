@@ -70,7 +70,7 @@ RECAL_SAMPLE=$SAMPLEDIR'/Preprocessing/Recalibrated/recalibrated.tsv'
 #This will generate the subdirectory /VariantCalling/HaplotypeCaller and /VariantCalling/HaplotypeCallerGVCF with vcf files and gvcf files.
 #Note these are unfiltered so they need to be filtered with GATK (currently not included in Sarek) 
 #echo "$NXFPATH/nextflow run $SAREKPATH/germlineVC.nf -profile $PROFILE --project $PROJECT --sample $RECAL_SAMPLE --genome $GENOME --genome_base $GENOMEBASE --containerPath $CONTAINERPATH --tools HaplotypeCaller"
-$NXFPATH/nextflow run $SAREKPATH/germlineVC.nf -profile $PROFILE --project $PROJECT --sample $RECAL_SAMPLE --genome $GENOME --genome_base $GENOMEBASE --containerPath $CONTAINERPATH --tools HaplotypeCaller
+#$NXFPATH/nextflow run $SAREKPATH/germlineVC.nf -profile $PROFILE --project $PROJECT --sample $RECAL_SAMPLE --genome $GENOME --genome_base $GENOMEBASE --containerPath $CONTAINERPATH --tools HaplotypeCaller
 
 #Somatic variant calling
 #This will generate the subdirectories /VariantCalling/Strelka, /VariantCalling/MuTect2, /VariantCalling/Manta and /VariantCalling/Ascat with the results from respective caller.
