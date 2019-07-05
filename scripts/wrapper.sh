@@ -24,7 +24,7 @@ do
     shift # past value
     ;;
     -d|--sampleDir)
-    SAMPLEDIR=$2
+    SAMPLEDIR=${2%/}
     shift # past argument
     shift # past value
     ;;
@@ -44,12 +44,12 @@ do
     shift # past value
     ;;
     -n|--nxfpath)
-    NXFPATH=$2
+    NXFPATH=${2%/}
     shift # past argument
     shift # past value
     ;;
     -s|--sarekpath)
-    SAREKPATH=$2
+    SAREKPATH=${2%/}
     shift # past argument
     shift # past value
     ;;
