@@ -127,7 +127,13 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
         ax1.text(tick, 1, 'm = '+str(label),horizontalalignment='center', size='x-small')
     plt.savefig(pp, format='pdf')
     pp.close()
-    print 'printed results to '+tumorid+'_allele_freqs.pdf'
+
+    p2 = PdfPages(tumorid+'_allele_freqs_concordant.pdf')
+    plt.hist(allele_freqs_nonempty[4], 10)
+    np.savefig(p2, format='pdf')
+    p2.close()
+
+    print ("printed results to '+tumorid+'_allele_freqs.pdf")
 
 
 
@@ -194,7 +200,7 @@ def generate_output(mutect2, strelka, tumorid, normalid, genomeIndex):
             sf.write("%s\t%s\t%s\t%s\t%s\t%s\n" %(baseinfo,filter, callers, format, gf_tumor, gf_normal))
             ai.write("%s\n" %(vcfinfo[called_by[0]]))
         else:
-            print "Conflict in ref and alt alleles between callers for SNVs "
+            print ("Conflict in ref and alt alleles between callers for SNVs ")
                   #+called_by+" at pos "+pos
 
     # Writing indel file
@@ -319,7 +325,7 @@ def parse_mutect2(vcf, tumorid, normalid):
                 if info[col] in [tumorid, normalid]:
                     datacolumn[info[col]] = col
                 else:
-                    print "ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect2 vcf"
+                    print ("ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect2 vcf")
                     break
         if not line.startswith("#"):
             filter1=re.compile('alt_allele_in_normal')
@@ -390,7 +396,7 @@ def parse_mutect1(vcf, tumorid, normalid):
                 if info[col] in [tumorid, normalid]:
                     datacolumn[info[col]]=col
                 else:
-                    print "ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect1 vcf"
+                    print ("ERROR: sample ids other than "+tumorid+" or "+normalid+" detected in MuTect1 vcf")
                     break
         if not line.startswith("#"):
             filter1 = re.compile('REJECT')
@@ -410,8 +416,8 @@ def parse_mutect1(vcf, tumorid, normalid):
                     snvs[pos]['ad']['tumor']=ad_tumor
                     snvs[pos]['ad']['normal']=ad_normal
                 else:
-                    print "WARNING: MuTect1 variant with multiple alternative alleles detected; skipped and not used in merged callset."
-                    print line
+                    print ("WARNING: MuTect1 variant with multiple alternative alleles detected; skipped and not used in merged callset.")
+                    print (line)
     return {'snvs':snvs}
 
 def parse_strelka(vcf, indelvcf):
@@ -427,7 +433,7 @@ def parse_strelka(vcf, indelvcf):
                 if info[col] in ['TUMOR', 'NORMAL']:
                     datacolumn[info[col]] = col
                 else:
-                    print "ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL"
+                    print ("ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL")
                     break
         if not line.startswith("#"):
 
@@ -466,8 +472,8 @@ def parse_strelka(vcf, indelvcf):
                         alt_depth_normal=ad_normal[allele]
                         alt_allele=allele
                 if len(alt) > 1:
-                    print "WARNING: Strelka variant with multiple alternative alleles detected. Reporting the alternative allele with highest read count:"
-                    print line
+                    print ("WARNING: Strelka variant with multiple alternative alleles detected. Reporting the alternative allele with highest read count:")
+                    print (line)
 
                 vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt_allele
                 snvs[pos]['info'] = vcfinfo
@@ -486,7 +492,7 @@ def parse_strelka(vcf, indelvcf):
                 if info[col] in ['TUMOR', 'NORMAL']:
                     datacolumn[info[col]] = col
                 else:
-                    print "ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL"
+                    print ("ERROR: Strelka VCF file does not contain column for TUMOR or NORMAL")
                     break
         if not line.startswith("#"):
 
@@ -512,8 +518,8 @@ def parse_strelka(vcf, indelvcf):
                 alt_alleles=alt.split(",")
 
                 if len(alt_alleles)>1:
-                    print "WARNING: Strelka indel with multiple alternative alleles detected."
-                    print line
+                    print ("WARNING: Strelka indel with multiple alternative alleles detected.")
+                    print (line)
 
                 vcfinfo = info[0] + '\t' + info[1] + '\t' + info[3] + '\t' + alt
                 indels[pos]['info'] = vcfinfo
