@@ -129,6 +129,7 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
     pp.close()
 
     pc = PdfPages(tumorid+'_allele_freqs_concordant.pdf')
+    fig, ax1 = plt.subplots(figsize=(7, 6))
     ph=plt.hist(allele_freqs_nonempty[4], 10)
     plt.show()
     plt.savefig(pc, format='pdf')
