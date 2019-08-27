@@ -128,10 +128,10 @@ def plot_allele_freqs(mutect2, strelka, tumorid):
     plt.savefig(pp, format='pdf')
     pp.close()
 
-    p2 = PdfPages(tumorid+'_allele_freqs_concordant.pdf')
-    plt.hist(allele_freqs_nonempty[4], 10)
-    plt.savefig(p2, format='pdf')
-    p2.close()
+    pc = PdfPages(tumorid+'_allele_freqs_concordant.pdf')
+    ph=plt.hist(allele_freqs_nonempty[4], 10)
+    ph.savefig(pc, format='pdf')
+    pc.close()
 
     print ("printed results to '+tumorid+'_allele_freqs.pdf")
 
